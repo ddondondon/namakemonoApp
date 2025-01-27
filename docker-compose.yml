@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  back:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    container_name: namakemono_back
+    volumes:
+      - ./back/app:/app
+    ports:
+      - '3000:3000'
+    working_dir: /app
+    command: node app.js
+    # 同じネットワークを利用
+    networks:
+      - my-network
+
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    container_name: namakemono_front
+    volumes:
+      - ./front/app:/app
+    ports:
+      - '8080:8080'
+    depends_on:
+      - back
+    working_dir: /app/vue-project
+    command: yarn serve
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    external: true
