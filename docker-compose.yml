@@ -1,4 +1,4 @@
-version: '3.9'
+# version: '3.9'  バージョンの記載不要
 
 services:
   back:

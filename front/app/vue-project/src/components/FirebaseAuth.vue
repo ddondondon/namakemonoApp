@@ -28,7 +28,7 @@
 .namakemono {
   top: 10px;
   left: 10px;
-  width: 50px;
+  width: 100px;
   height: 50px;
   position: absolute;
   cursor: pointer;
