@@ -1,3 +1,4 @@
+# postgres-container は同ネットワーク内で起動済
 # version: '3.9'  バージョンの記載不要
 
 services:
