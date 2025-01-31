@@ -19,6 +19,16 @@ resource "aws_subnet" "private_subnet" {
   }
 }
 
+resource "aws_subnet" "private_subnet_2" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = var.private_subnet_2_cidr
+  availability_zone = "${var.aws_region}c"  # 別AZ
+
+  tags = {
+    Name = "namakemonoApp-private-subnet-2"
+  }
+}
+
 resource "aws_route_table_association" "public_subnet_assoc" {
   subnet_id      = aws_subnet.public_subnet.id
   route_table_id = aws_route_table.public_rt.id

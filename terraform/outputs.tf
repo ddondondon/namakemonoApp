@@ -15,5 +15,5 @@ output "rds_endpoint" {
 
 output "rds_db_name" {
   description = "RDSのDB名"
-  value       = aws_db_instance.main.name
+  value       = aws_db_instance.main.db_name
 }

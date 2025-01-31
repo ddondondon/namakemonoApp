@@ -1,8 +1,10 @@
 # RDS Subnet Group
 resource "aws_db_subnet_group" "main" {
-  name       = "namakemonoApp-db-subnet-group"
-  subnet_ids = [aws_subnet.private_subnet.id]
-
+  name       = "namakemonoapp-db-subnet-group"
+  subnet_ids = [
+    aws_subnet.private_subnet.id,
+    aws_subnet.private_subnet_2.id
+  ]
   tags = {
     Name = "namakemonoApp-db-subnet-group"
   }
@@ -10,13 +12,13 @@ resource "aws_db_subnet_group" "main" {
 
 # RDS インスタンス
 resource "aws_db_instance" "main" {
-  identifier               = "namakemonoApp-rds"
+  identifier               = "namakemonoapp-rds"
   allocated_storage        = 20
   storage_type             = "gp2"
   engine                   = var.db_engine
   engine_version           = var.db_engine_version
   instance_class           = var.db_instance_class
-  name                     = var.db_name
+  db_name                  = var.db_name
   username                 = var.db_username
   password                 = var.db_password
   db_subnet_group_name     = aws_db_subnet_group.main.name
@@ -27,6 +29,6 @@ resource "aws_db_instance" "main" {
   deletion_protection      = false
 
   tags = {
-    Name = "namakemonoApp-rds"
+    Name = "namakemonoapp-rds"
   }
 }
