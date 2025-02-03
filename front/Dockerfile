@@ -1,19 +1,16 @@
-# ベースイメージとしてnode 22を使用
 FROM node:22
 
-# 作業ディレクトリを設定
 WORKDIR /app
 
-# vueCLIをインストール
-RUN yarn global add @vue/cli 
-RUN yarn add pinia
-RUN yarn add pinia axios
-RUN yarn add firebase
-RUN yarn add vuetify@next
+# package.json や yarn.lock を先にコピー
+COPY package*.json yarn.lock ./
 
-# コピー
+# vue-cli-serviceを含む依存関係をインストール
+# ※ package.json の devDependencies に "@vue/cli-service" を追加しておく
+#    pinia, axios, firebase, vuetify も package.json に追加して一括インストール
+RUN yarn install
+
+# ソースコードをコピー
 COPY . .
 
-# 対話モード
-CMD ["/bin/bash"]
-
+CMD ["yarn", "serve"]
