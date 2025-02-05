@@ -1,19 +1,12 @@
-# postgres-container は同ネットワーク内で起動済
-# version: '3.9'  バージョンの記載不要
-
 services:
   back:
     build:
       context: ./back
       dockerfile: Dockerfile
     container_name: namakemono_back
-    volumes:
-      - ./back/app:/app
     ports:
       - '3000:3000'
     working_dir: /app
-    command: node app.js
-    # 同じネットワークを利用
     networks:
       - my-network
 
@@ -22,32 +15,27 @@ services:
       context: ./front
       dockerfile: Dockerfile
     container_name: namakemono_front
-#    volumes:
-#      - ./front/app:/app
     ports:
       - '8080:8080'
     depends_on:
       - back
     working_dir: /app/vue-project
-    command: yarn serve
     networks:
       - my-network
 
   proxy:
     image: httpd:2.4
     container_name: proxy_container
-    # コンテナ内の80番と443番をホストにマッピング
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      # Apacheの設定ファイルや証明書を置くためのボリュームマウント
-      - ./proxy/apache_conf/my_proxy.conf:/usr/local/apache2/conf/conf.d/my_proxy.conf
+      - ./proxy/apache_conf/httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
+      - ./proxy/apache_conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
       - ./proxy/certs:/usr/local/apache2/conf/certs
     depends_on:
       - front
       - back
-    # 必要に応じてネットワーク設定など
     networks:
       - my-network
 
