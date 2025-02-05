@@ -4,7 +4,7 @@ FROM node:22
 # 作業ディレクトリを設定
 WORKDIR /app
 
-# コピー　
+# コピー
 COPY app/vue-project-ee823-firebase-adminsdk-lhbyv-d0398de819.json ./
 
 # Install PostgreSQL client tools
@@ -33,5 +33,3 @@ COPY . .
 
 # コマンド
 CMD ["node", "app/app.js"]
-
-
