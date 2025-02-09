@@ -32,7 +32,7 @@ services:
     volumes:
       - ./proxy/apache_conf/httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
       - ./proxy/apache_conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
-      - ./proxy/certs:/usr/local/apache2/conf/certs
+      - ./proxy/apache_conf/certs:/usr/local/apache2/conf/certs
     depends_on:
       - front
       - back

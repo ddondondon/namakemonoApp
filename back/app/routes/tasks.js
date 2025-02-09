@@ -1,11 +1,16 @@
 // back/app/routes/tasks.js
 const express = require('express');
 const router = express.Router();
-const dotenv = require('dotenv');
-const { Pool } = require('pg');
+//const dotenv = require('dotenv');
+//const { Pool } = require('pg');
 const admin = require("firebase-admin");
 
-dotenv.config();
+//dotenv.config();
+const path = require('path');
+const dotenv = require('dotenv');
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
+const { Pool } = require('pg');
 
 // Firebase Admin SDK初期化
 admin.initializeApp({
@@ -18,7 +23,11 @@ const pool = new Pool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
+console.log(process.env.DB_HOST);
 
 // GET /api/tasks
 router.get('/', verifyToken, async (req, res) => {
@@ -131,11 +140,12 @@ async function verifyToken(req, res, next) {
     const client = await pool.connect();
     try {
       const now = new Date();
-      const checkUserQuery = `SELECT COUNT(*) FROM userTbl WHERE firebaseUser = $1`;
+      const checkUserQuery = `SELECT COUNT(*) AS cnt FROM userTbl WHERE firebaseUser = $1`;
       const result = await client.query(checkUserQuery, [req.uid]);
 
       //      if (parseInt(result.rows[0].count, 10) > 0) {
-      if (result.rows.length > 0) {
+	console.log("result.rows=",result.rows,"result.rows[0].cnt=",result.rows[0].cnt);
+      if (result.rows[0].cnt > 0) {
         // ユーザが存在する場合、lastLoginDateを更新
         const updateQuery = `
           UPDATE userTbl
@@ -145,6 +155,7 @@ async function verifyToken(req, res, next) {
         await client.query(updateQuery, [now, req.uid]);
         const selectRowrQuery = `SELECT userid FROM userTbl WHERE firebaseUser = $1`;
         const resultUserId = await client.query(selectRowrQuery, [req.uid]);
+	      console.log("updateQuery=",updateQuery,"req.uid=",req.uid);
         req.userid = resultUserId.rows[0].userid;
       } else {
         // ユーザが存在しない場合、レコードを挿入
@@ -153,7 +164,8 @@ async function verifyToken(req, res, next) {
           VALUES ($1, $2, $3)
           RETURNING userid 
         `;
-        const insertResult = await client.query(insertQuery, [req.uid, now, now]);
+	console.log("insertQuery=",insertQuery,"req.uid=",req.uid); 
+	const insertResult = await client.query(insertQuery, [req.uid, now, now]);
         req.userid = insertResult.rows[0].userid; // 挿入後の userid をリクエストに追加
       }
     } catch (dbError) {
