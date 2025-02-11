@@ -1,8 +1,6 @@
 // back/app/routes/tasks.js
 const express = require('express');
 const router = express.Router();
-//const dotenv = require('dotenv');
-//const { Pool } = require('pg');
 const admin = require("firebase-admin");
 
 //dotenv.config();
@@ -11,6 +9,7 @@ const dotenv = require('dotenv');
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const { Pool } = require('pg');
+const useSSL = (process.env.DB_SSL === 'true');
 
 // Firebase Admin SDK初期化
 admin.initializeApp({
@@ -23,9 +22,8 @@ const pool = new Pool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  // DB_SSL が 'true' の場合のみ SSL オプションを付与
+  ...(useSSL ? { ssl: { rejectUnauthorized: false } } : {}),
 });
 console.log(process.env.DB_HOST);
 
