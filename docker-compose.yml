@@ -39,6 +39,27 @@ services:
     networks:
       - my-network
 
+  selenium:
+    image: selenium/standalone-chromium:latest
+    container_name: namakemono_selenium
+    depends_on:
+      - front
+    ports:
+      - "4444:4444"
+    networks:
+      - my-network
+  tests:
+    build:
+      context: ./tests
+      dockerfile: Dockerfile
+    container_name: namakemono_tests
+    depends_on:
+      - front
+      - back
+      - selenium
+    networks:
+      - my-network
+
 networks:
   my-network:
     external: true

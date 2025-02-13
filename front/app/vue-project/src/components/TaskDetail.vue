@@ -99,6 +99,8 @@ const submitTask = () => {
   });
   console.log('Task submitted:', { ...task.value });
   console.log('タスクを登録しました。');
+  console.log('number:',task.value.number,'title:',task.value.title,'type:',task.value.type,'date:',task.value.date,'content:',task.value.content,'isCompleted:',task.value.isCompleted
+);
   addUpFlg.value = '2';
 };
 
@@ -111,6 +113,8 @@ const updateTask = () => {
 
   console.log('Task submitted:', { ...task.value });
   console.log('タスクを更新しました。');
+  console.log('number:',task.value.number,'title:',task.value.title,'type:',task.value.type,'date:',task.value.date,'content:',task.value.content,'isCompleted:',task.value.isCompleted
+);
 };
 
 // タスク削除処理
@@ -118,6 +122,8 @@ const deleteTask = () => {
   taskStore.removeTask(task.value.number);
   console.log('Task submitted:', task.value.number);
   console.log('タスクを削除しました。');
+  console.log('number:',task.value.number,'title:',task.value.title,'type:',task.value.type,'date:',task.value.date,'content:',task.value.content,'isCompleted:',task.value.isCompleted
+);
   router.push({
       name: 'home',
     })
