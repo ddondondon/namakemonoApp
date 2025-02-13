@@ -15,15 +15,15 @@
           <v-checkbox v-model="task.isCompleted" label="完了フラグ" class="my-2"></v-checkbox>
 
           <!-- 登録ボタン -->
-          <v-btn v-show="addUpFlg === '1'" color="#FFCCCC" class="mr-2" @click="submitTask">
+          <v-btn v-show="addUpFlg === '1'" color="#EEEEEE" class="mr-2" @click="submitTask">
             登録
           </v-btn>
           <!-- 更新ボタン -->
-          <v-btn v-show="addUpFlg === '2'" color="#CCFFCC" class="mr-2" @click="updateTask">
+          <v-btn v-show="addUpFlg === '2'" color="#EEEEEE" class="mr-2" @click="updateTask">
             更新
           </v-btn>
           <!-- 削除ボタン -->
-          <v-btn v-show="addUpFlg === '2'" color="#FFCCFF" @click="confirmDeleteTask">
+          <v-btn v-show="addUpFlg === '2'" color="#EEEEEE" @click="confirmDeleteTask">
             削除
           </v-btn>
         </v-form>
