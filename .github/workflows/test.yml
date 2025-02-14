@@ -22,6 +22,8 @@ jobs:
             
       - name: Build and run services
         run: |
+          # ネットワークが存在しない場合に作成
+          docker network create my-network || true
           # テストコンテナをビルドする
           docker compose build tests
           # テストコンテナを実行してテストを走らせる
