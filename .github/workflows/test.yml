@@ -16,6 +16,10 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
+      - name: Create Firebase credentials file
+        run: |
+          echo "${{ secrets.FIREBASE_CREDENTIALS }}" | base64 --decode > back/app/vue-project-ee823-firebase-adminsdk-lhbyv-d0398de819.json
+            
       - name: Build and run services
         run: |
           # テストコンテナをビルドする
