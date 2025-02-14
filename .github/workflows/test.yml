@@ -26,5 +26,7 @@ jobs:
           docker network create my-network || true
           # 全てのコンテナをビルドして起動
           docker compose up -d
+          # Seleniumが起動するまで待機
+          sleep 10
           # テストコンテナを実行してテストを走らせる
           docker compose run --rm tests
