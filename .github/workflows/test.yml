@@ -24,7 +24,7 @@ jobs:
         run: |
           # ネットワークが存在しない場合に作成
           docker network create my-network || true
-          # テストコンテナをビルドする
-          docker compose build tests
+          # 全てのコンテナをビルドして起動
+          docker compose up -d
           # テストコンテナを実行してテストを走らせる
           docker compose run --rm tests
