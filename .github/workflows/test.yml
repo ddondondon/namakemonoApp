@@ -25,9 +25,9 @@ jobs:
           # ネットワークが存在しない場合に作成
           docker network create my-network || true
           # 全てのコンテナをビルドして起動
-          docker compose up -d
+          #docker compose up -d
           # Seleniumが起動するまで待機
-          sleep 10
+          #sleep 10
           # ★Seleniumコンテナのステータスを確認
           docker compose ps
           docker compose logs --tail=100 selenium
