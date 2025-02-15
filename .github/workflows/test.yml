@@ -31,6 +31,8 @@ jobs:
           # ★Seleniumコンテナのステータスを確認
           docker compose ps
           docker compose logs --tail=100 selenium
+          # テストコンテナをビルド
+          docker compose build tests
           # テストコンテナを実行してテストを走らせる
           docker compose run --rm tests
           # ★テスト後に再度ログを確認
