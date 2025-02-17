@@ -3,7 +3,7 @@ services:
     build:
       context: ./back
       dockerfile: Dockerfile
-    # container_name: namakemono_back
+    container_name: namakemono_back
     ports:
       - '3000:3000'
     working_dir: /app
@@ -14,7 +14,7 @@ services:
     build:
       context: ./front
       dockerfile: Dockerfile
-    # container_name: namakemono_front
+    container_name: namakemono_front
     ports:
       - '8080:8080'
     depends_on:
@@ -25,7 +25,7 @@ services:
 
   proxy:
     image: httpd:2.4
-    # container_name: proxy_container
+    container_name: proxy_container
     ports:
       - "80:80"
       - "443:443"
@@ -41,7 +41,7 @@ services:
 
   selenium:
     image: selenium/standalone-chromium:latest
-    # container_name: namakemono_selenium
+    container_name: namakemono_selenium
     depends_on:
       - front
     ports:
@@ -52,7 +52,7 @@ services:
     build:
       context: ./tests
       dockerfile: Dockerfile
-    # container_name: namakemono_tests
+    container_name: namakemono_tests
     depends_on:
       - front
       - back
@@ -62,7 +62,7 @@ services:
 
   db:
     image: postgres
-    # container_name: postgres-container
+    container_name: postgres-container
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
