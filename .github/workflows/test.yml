@@ -19,6 +19,14 @@ jobs:
       - name: Create Firebase credentials file
         run: |
           echo "${{ secrets.FIREBASE_CREDENTIALS }}" | base64 --decode > back/app/vue-project-ee823-firebase-adminsdk-lhbyv-d0398de819.json
+      # .env（backコンテナ用）を作成
+      - name: Create back/.env
+        run: |
+          echo "${{ secrets.BACK_ENV }}" | base64 --decode > back/app/.env
+      # .env（frontコンテナ用）を作成
+      - name: Create front/.env
+        run: |
+          echo "${{ secrets.FRONT_ENV }}" | base64 --decode > front/app/vue-project/.env
             
       # 外部ネットワーク「my-network」を作成（存在しない場合のみ）
       - name: Create external network (my-network)
