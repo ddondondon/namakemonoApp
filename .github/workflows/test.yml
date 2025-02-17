@@ -2,39 +2,39 @@ name: Run Selenium Tests
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: [ "main" ]  # 必要に応じて変更
   pull_request:
-    branches: [ "main", "develop" ]
+    branches: [ "main" ]  # 必要に応じて変更
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Check out code
+      # リポジトリをチェックアウト
+      - name: Check out repository
         uses: actions/checkout@v2
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+      # 外部ネットワーク「my-network」を作成（存在しない場合のみ）
+      - name: Create external network (my-network)
+        run: docker network create my-network || true
 
-      - name: Create Firebase credentials file
-        run: |
-          echo "${{ secrets.FIREBASE_CREDENTIALS }}" | base64 --decode > back/app/vue-project-ee823-firebase-adminsdk-lhbyv-d0398de819.json
-            
-      - name: Build and run services
-        run: |
-          # ネットワークが存在しない場合に作成
-          docker network create my-network || true
-          # 全てのコンテナをビルドして起動
-          #docker compose up -d
-          # Seleniumが起動するまで待機
-          #sleep 10
-          # ★Seleniumコンテナのステータスを確認
-          docker compose ps
-          docker compose logs --tail=100 selenium
-          # テストコンテナをビルド
-          # docker compose build tests
-          # テストコンテナを実行してテストを走らせる
-          docker compose run --rm tests
-          # ★テスト後に再度ログを確認
-          docker compose logs --tail=100 selenium
-          docker compose ps
+      # Docker イメージをビルド (tests イメージ含む)
+      - name: Build Docker images
+        run: docker compose build
+
+      # services: back, front, proxy, selenium, db をバックグラウンド起動
+      - name: Start services in background
+        run: docker compose up -d back front proxy selenium db
+
+      # サービス起動を待つ（必要に応じて秒数を調整、もしくは待機スクリプト利用）
+      - name: Wait for services to be ready
+        run: sleep 20
+
+      # テスト実行
+      - name: Run tests
+        run: docker compose run --rm tests
+
+      # テスト後にコンテナを停止・削除
+      - name: Shut down and remove containers
+        run: docker compose down

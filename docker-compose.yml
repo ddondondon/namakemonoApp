@@ -60,6 +60,20 @@ services:
     networks:
       - my-network
 
+  db:
+    image: postgres
+    container_name: postgres-container
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    ports:
+      - '5432:5432'
+    depends_on:
+      - back
+    networks:
+      - my-network
+
 networks:
   my-network:
-    # external: true
+     external: true
