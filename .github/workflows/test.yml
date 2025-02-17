@@ -35,6 +35,13 @@ jobs:
       # サービス起動を待つ（必要に応じて秒数を調整、もしくは待機スクリプト利用）
       - name: Wait for services to be ready
         run: sleep 60
+        
+      # デバッグ用
+      - name: Check containers
+        run: docker compose ps
+      
+      - name: Log of front
+        run: docker compose logs front
 
       # テスト実行
       - name: Run tests
