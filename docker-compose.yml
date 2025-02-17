@@ -74,6 +74,6 @@ services:
     networks:
       - my-network
 
-networks:
-  my-network:
+# networks:
+#   my-network:
     #  external: true
