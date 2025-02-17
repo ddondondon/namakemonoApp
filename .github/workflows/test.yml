@@ -26,11 +26,11 @@ jobs:
 
       # Docker イメージをビルド (tests イメージ含む)
       - name: Build Docker images
-        run: docker compose build
+        run: docker compose build back front selenium tests
 
       # services: back, front, proxy, selenium, db をバックグラウンド起動
       - name: Start services in background
-        run: docker compose up -d back front proxy selenium db
+        run: docker compose up -d back front selenium db
 
       # サービス起動を待つ（必要に応じて秒数を調整、もしくは待機スクリプト利用）
       - name: Wait for services to be ready
@@ -42,4 +42,4 @@ jobs:
 
       # テスト後にコンテナを停止・削除
       - name: Shut down and remove containers
-        run: docker compose down
+        run: docker compose down  back front selenium db
