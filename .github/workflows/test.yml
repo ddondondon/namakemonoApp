@@ -21,20 +21,20 @@ jobs:
           echo "${{ secrets.FIREBASE_CREDENTIALS }}" | base64 --decode > back/app/vue-project-ee823-firebase-adminsdk-lhbyv-d0398de819.json
             
       # 外部ネットワーク「my-network」を作成（存在しない場合のみ）
-      # - name: Create external network (my-network)
-      #   run: docker network create my-network || true
+      - name: Create external network (my-network)
+        run: docker network create my-network || true
 
       # Docker イメージをビルド (tests イメージ含む)
       - name: Build Docker images
         run: docker compose build back front selenium tests
 
-      # services: back, front, proxy, selenium, db をバックグラウンド起動
+      # services: back, front, selenium, db をバックグラウンド起動
       - name: Start services in background
         run: docker compose up -d back front selenium db
 
       # サービス起動を待つ（必要に応じて秒数を調整、もしくは待機スクリプト利用）
       - name: Wait for services to be ready
-        run: sleep 20
+        run: sleep 60
 
       # テスト実行
       - name: Run tests
