@@ -15,6 +15,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
 
+      # FIREBASE_CREDENTIALSを作成
+      - name: Create Firebase credentials file
+        run: |
+          echo "${{ secrets.FIREBASE_CREDENTIALS }}" | base64 --decode > back/app/vue-project-ee823-firebase-adminsdk-lhbyv-d0398de819.json
+            
       # 外部ネットワーク「my-network」を作成（存在しない場合のみ）
       - name: Create external network (my-network)
         run: docker network create my-network || true
