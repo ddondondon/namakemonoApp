@@ -6,6 +6,5 @@
 **/proxy/apache_conf/certs
 **/install
 AWSCLIV2.pkg
-variables.tf
 terraform.*
 .terraform*
