@@ -1,10 +1,8 @@
 name: Run Selenium Tests
 
 on:
-  push:
-    branches: [ "main" ]  # 必要に応じて変更
   pull_request:
-    branches: [ "main" ]  # 必要に応じて変更
+    branches: [ "main" ]  
 
 jobs:
   test:
