@@ -4,6 +4,7 @@ import { fetchTasksFromServer } from '../api/taskApi';
 import { createTaskOnServer } from '../api/taskApi';
 import { deleteTaskFromServer } from '../api/taskApi';
 import { updateTaskOnServer } from '../api/taskApi';
+import { useAuthStore } from '../store/authStore';
 
 export const useTaskStore = defineStore('taskStore', {
   state: () => ({
@@ -21,7 +22,10 @@ export const useTaskStore = defineStore('taskStore', {
     async addTask(newTask) {
       try {
         this.tasks.push(newTask); // 新しいタスクを追加
-        await createTaskOnServer(newTask);
+        const authStore = useAuthStore();
+        if (authStore.idToken) {
+          await createTaskOnServer(newTask);
+        }
       } catch (error) {
         console.error('タスクの追加に失敗しました:', error);
       }
@@ -29,7 +33,10 @@ export const useTaskStore = defineStore('taskStore', {
     async removeTask(taskId) {
       try {
         this.tasks = this.tasks.filter(task => task.number !== taskId); // 特定のタスクを削除
-        await deleteTaskFromServer(taskId);
+        const authStore = useAuthStore();
+        if (authStore.idToken) {
+          await deleteTaskFromServer(taskId);
+        }
       } catch (error) {
         console.error('タスクの削除に失敗しました:', error);
       }
@@ -37,7 +44,10 @@ export const useTaskStore = defineStore('taskStore', {
     async updateTask(updatedTask) {
       try {
         const index = this.tasks.findIndex(task => task.number === updatedTask.number);
-        await updateTaskOnServer(updatedTask);
+        const authStore = useAuthStore();
+        if (authStore.idToken) {
+          await updateTaskOnServer(updatedTask);
+        }
         if (index !== -1) {
           this.tasks[index] = updatedTask; // タスクを更新
         }
