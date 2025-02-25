@@ -2,7 +2,7 @@
   <FirebaseAuth />
   <v-app>
     <v-container>
-      <v-checkbox v-model="showCompleted" label="View completed tasks" />
+      <v-checkbox v-model="showCompleted" label="完了タスクを表示" />
       <v-data-table :items="filteredTasks" :sort-by="[{ key: 'date', order: 'asc' }]">  
         <template v-slot:body="{ items }">
           <tr v-for="item in items" :key="item.number">
@@ -38,8 +38,9 @@ import  FirebaseAuth  from "./FirebaseAuth.vue";
 import { ref, computed } from 'vue'; 
 
 const taskTypeItems = [
-  { title: "deadline", value: "1" },
-  { title: "schedule", value: "2" },
+  { title: "休み", value: "1" },
+  { title: "予定", value: "2" },
+  { title: "締切", value: "3" },
 ];
 
 const taskStore = useTaskStore();

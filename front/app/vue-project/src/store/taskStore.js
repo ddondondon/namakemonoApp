@@ -59,15 +59,41 @@ export const useTaskStore = defineStore('taskStore', {
      * カレンダー表示用のイベントデータを生成して返すメソッド
      */
     loadEvents() {
-      return this.tasks.map(task => ({
+      /*return this.tasks.map(task => ({
         title: task.title,
         start: new Date(task.date),
         end: new Date(task.date),
         color: task.isCompleted === '1' ? '#66CC99' : '#FF6666',
         allDay: true,
-        number: task.number
-      }));
-    },
+        number: task.number,
+        type: task.type
+      })); */
+      return this.tasks.map(task => {
+        let color;
+        if (task.type === '1') {
+          // ① typeが'1'の場合
+          color = '#EEFFFF';
+        } else if (task.type === '2') {
+          // ② typeが'2'の場合
+          color = '#FFFFCC';
+        } else if (task.type === '3' && task.isCompleted === '1') {
+          // ③ typeが'3' かつ isCompleted === '1' の場合
+          color = '#CCFFCC';
+        } else if (task.type === '3' && task.isCompleted !== '1') {
+          // ④ typeが'3' かつ isCompleted !== '1' の場合
+          color = '#FF6666';
+        }
+        return {
+          title: task.title,
+          start: new Date(task.date),
+          end: new Date(task.date),
+          color: color,
+          allDay: true,
+          number: task.number,
+          type: task.type
+        };
+      });
+    }
   },
   getters: {
     getTaskById: (state) => (id) => {

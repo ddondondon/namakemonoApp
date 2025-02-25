@@ -3,12 +3,12 @@
     <v-card>
       <v-card-text>
         <v-form ref="form" v-model="valid">
-          <!-- タイトル -->
-          <v-text-field label="タイトル" v-model="task.title" maxlength="10" counter outlined required></v-text-field>
           <!-- タスク区分 -->
           <v-select v-model="task.type" :items="taskTypeItems" label="タスク区分" outlined required></v-select>
           <!-- 締切日（予定日） -->
           <v-text-field :label="dateLabel" v-model="task.date" type="date" outlined required></v-text-field>
+          <!-- タイトル -->
+          <v-text-field label="タイトル" v-model="task.title" maxlength="10" counter outlined required></v-text-field>
           <!-- 内容 -->
           <v-textarea label="内容" v-model="task.content" maxlength="100" counter rows="4" outlined required></v-textarea>
           <!-- 完了フラグ -->
@@ -48,8 +48,9 @@ const taskStore = useTaskStore();
 
 // タスクの区分用に利用するアイテム
 const taskTypeItems = [
-    { title: "deadline", value: "1" },
-    { title: "schedule", value: "2" },
+    { title: "休み", value: "1" },
+    { title: "予定", value: "2" },
+    { title: "締切", value: "3" },
 ];
 
 //新規／更新判定フラグ（1:新規,2:更新）
@@ -67,9 +68,9 @@ const task = ref({
 
 // タスク区分に応じて「実施予定日」あるいは「締切日」を返す
 const dateLabel = computed(() => {
-  return task.value.type === '2'
-    ? '実施予定日'
-    : '締切日';
+  return task.value.type === '3'
+    ? '締切日'
+    : '予定日';
 });
 
 // マウント時にストアから既存データをセット
