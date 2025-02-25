@@ -16,6 +16,26 @@
             :data-event-number="event.number"
             :style="{ backgroundColor: event.color || 'blue', cursor: 'pointer' }"
           >
+            <!-- 画像を表示 -->
+            <img
+              v-if="event.type === '1'"
+              src="@/assets/animal_namakemono_mini.png"
+              alt="ナマケモノ"
+              style="width: 50px; height: 50px;"
+            />
+            <br v-if="event.type === '1'" />
+            <img
+              v-if="event.type === '2'"
+              src="@/assets/clock.png"
+              alt="ベル"
+              style="width: 20px; height: 20px;"
+            />
+            <img
+              v-if="event.type === '3'"
+              src="@/assets/bell.png"
+              alt="ベル"
+              style="width: 20px; height: 20px;"
+            />
             {{ event.title }}
           </div>
         </template>
