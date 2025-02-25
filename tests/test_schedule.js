@@ -52,10 +52,6 @@ describe("Schedule Test - Create & Update", function() {
       const currentUrl = await driver.getCurrentUrl();
       expect(currentUrl).to.include('/taskDetail');
 
-      // ---- タイトル入力 ----
-      const textInputs = await driver.findElements(By.css('input[type="text"]'));
-      await textInputs[0].sendKeys("自動テスト");
-
       // ---- タスク区分選択 (deadline) ----
       const vSelectFieldInput = await driver.findElement(By.css('.v-select .v-field__input'));
       await vSelectFieldInput.click();
@@ -76,6 +72,10 @@ describe("Schedule Test - Create & Update", function() {
         arguments[0].dispatchEvent(new Event('input', { bubbles: true }));
         arguments[0].dispatchEvent(new Event('change', { bubbles: true }));
       `, dateInput);
+
+      // ---- タイトル入力 ----
+      const textInputs = await driver.findElements(By.css('input[type="text"]'));
+      await textInputs[0].sendKeys("自動テスト");
 
       // ---- 内容の入力 (現在時刻) ----
       const now = new Date().toLocaleString();
