@@ -64,8 +64,15 @@ describe("Schedule Test - Create & Update", function() {
       await driver.wait(until.elementIsVisible(deadlineItem), 5000);
       await driver.executeScript("arguments[0].click();", deadlineItem);
 
+      // 「締切」をクリック後、再描画されるフォームの待機
+      const dateInput = await driver.wait(
+        until.elementLocated(By.css('input[type="date"]')),
+        5000
+      );
+      await driver.wait(until.elementIsVisible(dateInput), 5000);
+    
       // ---- 締切日の入力 ----
-      const dateInput = await driver.findElement(By.css('input[type="date"]'));
+      //const dateInput = await driver.findElement(By.css('input[type="date"]'));
       await dateInput.clear();
       await driver.executeScript(`
         arguments[0].value = '2025-12-23';
