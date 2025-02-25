@@ -52,22 +52,21 @@ describe("Schedule Test - Create & Update", function() {
       const currentUrl = await driver.getCurrentUrl();
       expect(currentUrl).to.include('/taskDetail');
 
-      // ---- タイトル入力 ----
-      const textInputs = await driver.findElements(By.css('input[type="text"]'));
-      await textInputs[0].sendKeys("自動テスト");
-
       // ---- タスク区分選択 (deadline) ----
       const vSelectFieldInput = await driver.findElement(By.css('.v-select .v-field__input'));
       await vSelectFieldInput.click();
 
-      // ドロップダウンが表示されるまで待機し、"deadline" を選択
+      // ドロップダウンが表示されるまで待機し、"休日" を選択
       const deadlineItem = await driver.wait(
-        until.elementLocated(By.xpath("//div[contains(@class,'v-list-item') and contains(., 'deadline')]")),
+        until.elementLocated(By.xpath("//div[contains(@class,'v-list-item') and contains(., '休日')]")),
         5000
       );
       await driver.wait(until.elementIsVisible(deadlineItem), 5000);
       await driver.executeScript("arguments[0].click();", deadlineItem);
 
+      // 「締切」をクリック後、再描画されるフォームの待機
+      await driver.sleep(3000);
+      
       // ---- 締切日の入力 ----
       const dateInput = await driver.findElement(By.css('input[type="date"]'));
       await dateInput.clear();
@@ -76,6 +75,10 @@ describe("Schedule Test - Create & Update", function() {
         arguments[0].dispatchEvent(new Event('input', { bubbles: true }));
         arguments[0].dispatchEvent(new Event('change', { bubbles: true }));
       `, dateInput);
+
+      // ---- タイトル入力 ----
+      const textInputs = await driver.findElements(By.css('input[type="text"]'));
+      await textInputs[0].sendKeys("自動テスト");
 
       // ---- 内容の入力 (現在時刻) ----
       const now = new Date().toLocaleString();

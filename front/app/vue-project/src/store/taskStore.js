@@ -59,15 +59,6 @@ export const useTaskStore = defineStore('taskStore', {
      * カレンダー表示用のイベントデータを生成して返すメソッド
      */
     loadEvents() {
-      /*return this.tasks.map(task => ({
-        title: task.title,
-        start: new Date(task.date),
-        end: new Date(task.date),
-        color: task.isCompleted === '1' ? '#66CC99' : '#FF6666',
-        allDay: true,
-        number: task.number,
-        type: task.type
-      })); */
       return this.tasks.map(task => {
         let color;
         if (task.type === '1') {

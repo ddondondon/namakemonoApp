@@ -4,15 +4,15 @@
       <v-card-text>
         <v-form ref="form" v-model="valid">
           <!-- タスク区分 -->
-          <v-select v-model="task.type" :items="taskTypeItems" label="タスク区分" outlined required></v-select>
+          <v-select v-model="task.type" :items="taskTypeItems" label="タスク区分" outlined required color="#660000" bg-color="#FFE4E1"></v-select>
           <!-- 締切日（予定日） -->
-          <v-text-field :label="dateLabel" v-model="task.date" type="date" outlined required></v-text-field>
+          <v-text-field :label="dateLabel" v-model="task.date" type="date" outlined required class="indentField"></v-text-field>
           <!-- タイトル -->
-          <v-text-field label="タイトル" v-model="task.title" maxlength="10" counter outlined required></v-text-field>
+          <v-text-field label="タイトル" v-model="task.title" maxlength="10" counter outlined required class="indentField"></v-text-field>
           <!-- 内容 -->
-          <v-textarea label="内容" v-model="task.content" maxlength="100" counter rows="4" outlined required></v-textarea>
+          <v-textarea label="内容" v-model="task.content" maxlength="100" counter rows="4" outlined required class="indentField"></v-textarea>
           <!-- 完了フラグ -->
-          <v-checkbox v-model="task.isCompleted" label="完了フラグ" class="my-2"></v-checkbox>
+          <v-checkbox v-model="task.isCompleted" label="完了フラグ" class="my-2 indentField"></v-checkbox>
 
           <!-- 登録ボタン -->
           <v-btn v-show="addUpFlg === '1'" color="#EEEEEE" class="mr-2" @click="submitTask">
@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useTaskStore } from '../store/taskStore';
 
@@ -48,7 +48,7 @@ const taskStore = useTaskStore();
 
 // タスクの区分用に利用するアイテム
 const taskTypeItems = [
-    { title: "休み", value: "1" },
+    { title: "休日", value: "1" },
     { title: "予定", value: "2" },
     { title: "締切", value: "3" },
 ];
@@ -90,7 +90,19 @@ onMounted(() => {
     addUpFlg.value = '2';
   }
 });
-
+// 休日を選択したらタイトルと内容を自動で変更する
+watch(
+  () => task.value.type,
+  (newType) => {
+    if (newType === '1') { // value: '1' が休日
+      task.value.title = '休';
+      task.value.content = '理由は要らない';
+    }else{
+      task.value.title = '';
+      task.value.content = '';
+    }
+  }
+);
 // タスク登録処理
 const submitTask = () => {
   numbering();
@@ -168,3 +180,11 @@ function confirmDeleteTask() {
 }
 
 </script>
+
+<style scoped>
+  .indentField {
+   /* 左にインデントしてスペースを空ける分、widthを狭くして右端を合わせる */
+   margin-left: 25px;
+   width: calc(100% - 25px);
+  }
+</style>

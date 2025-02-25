@@ -38,7 +38,7 @@ import  FirebaseAuth  from "./FirebaseAuth.vue";
 import { ref, computed } from 'vue'; 
 
 const taskTypeItems = [
-  { title: "休み", value: "1" },
+  { title: "休日", value: "1" },
   { title: "予定", value: "2" },
   { title: "締切", value: "3" },
 ];
