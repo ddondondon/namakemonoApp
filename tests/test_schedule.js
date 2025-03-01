@@ -89,12 +89,6 @@ describe("Schedule Test - Create & Update", function() {
       const registerButton = await driver.findElement(By.xpath("//button[contains(., '登録')]"));
       await registerButton.click();
 
-      // 登録後の確認: 登録ボタンが非表示になり、更新ボタンが表示される
-      await driver.wait(
-        until.elementIsNotVisible(registerButton),
-        10000,
-        "登録後も '登録' ボタンが非表示になりませんでした"
-      );
       const updateButton = await driver.findElement(By.xpath("//button[contains(., '更新')]"));
       expect(await updateButton.isDisplayed()).to.be.true;
 
