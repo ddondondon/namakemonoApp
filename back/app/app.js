@@ -1,5 +1,6 @@
 // back/app/app.js
 const express = require('express');
+const templatesRouter = require('./routes/templates');
 const tasksRouter = require('./routes/tasks');
 const app = express();
 const cors = require('cors');
@@ -11,6 +12,8 @@ app.use(express.json());
 app.use(cors());
 
 // ルーティングの設定
+// /api/templates へのリクエストを templatesRouter に委譲
+app.use('/api/tasks/templates', templatesRouter);
 // /api/tasks へのリクエストを tasksRouter に委譲
 app.use('/api/tasks', tasksRouter);
 

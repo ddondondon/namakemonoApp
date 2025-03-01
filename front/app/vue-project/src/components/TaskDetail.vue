@@ -4,7 +4,32 @@
       <v-card-text>
         <v-form ref="form" v-model="valid">
           <!-- タスク区分 -->
-          <v-select v-model="task.type" :items="taskTypeItems" label="タスク区分" outlined required color="#660000" bg-color="#FFE4E1"></v-select>
+            <!-- start-template追加 -->
+            <v-row>
+             <v-col cols="6">
+               <v-select
+                 v-model="task.type"
+                 :items="taskTypeItems"
+                 label="タスク区分"
+                 outlined
+                 required
+                 color="#660000"
+                 bg-color="#FFE4E1"
+               ></v-select>
+             </v-col>
+               <!-- タスク区分が選択された場合に「雛形表示」「雛形登録」ボタン表示 -->
+               <v-col cols="3" class="d-flex align-center justify-start">
+               <v-btn v-if="task.type" color="#EEEEEE" @click="displayTemplate">
+                雛形表示
+               </v-btn>
+             </v-col>
+             <v-col cols="3" class="d-flex align-center justify-start">
+               <v-btn v-if="task.type" color="#EEEEEE" @click="submitTemplate">
+                雛形登録
+               </v-btn>
+             </v-col>
+            </v-row>
+            <!-- end-template追加 -->
           <!-- 締切日（予定日） -->
           <v-text-field :label="dateLabel" v-model="task.date" type="date" outlined required class="indentField"></v-text-field>
           <!-- タイトル -->
@@ -36,6 +61,7 @@
 import { ref, onMounted, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useTaskStore } from '../store/taskStore';
+import { useTemplateStore } from '../store/templateStore';  //template追加
 
 // ルートパラメータ取得
 const route = useRoute();
@@ -45,6 +71,7 @@ const router = useRouter();
 // フォームバリデーション
 const valid = ref(false);
 const taskStore = useTaskStore();
+const templateStore = useTemplateStore();   //template追加
 
 // タスクの区分用に利用するアイテム
 const taskTypeItems = [
@@ -64,6 +91,11 @@ const task = ref({
   date: '',
   content: '',
   isCompleted: false,
+});
+const template = ref({
+  type: '',
+  title: '',
+  content: ''
 });
 
 // タスク区分に応じて「実施予定日」あるいは「締切日」を返す
@@ -90,19 +122,7 @@ onMounted(() => {
     addUpFlg.value = '2';
   }
 });
-// 休日を選択したらタイトルと内容を自動で変更する
-watch(
-  () => task.value.type,
-  (newType) => {
-    if (newType === '1') { // value: '1' が休日
-      task.value.title = '休';
-      task.value.content = '理由は要らない';
-    }else{
-      task.value.title = '';
-      task.value.content = '';
-    }
-  }
-);
+
 // タスク登録処理
 const submitTask = () => {
   numbering();
@@ -141,6 +161,28 @@ const deleteTask = () => {
       name: 'home',
     })
 };
+
+// start-template追加
+const submitTemplate = () => {
+  console.log('雛形登録ボタン押下');
+  template.value.type = task.value.type
+  template.value.title = task.value.title
+  template.value.content = task.value.content
+  templateStore.submitTemplate(template.value);
+  console.log("template.value:",template.value);
+};
+const displayTemplate = () => {
+  console.log('雛形表示ボタン押下');
+  const template = templateStore.getTemplateByType(task.value.type);
+  if (template) {
+    task.value.title = template.title;
+    task.value.content = template.content;
+  }else{
+    task.value.title = "";
+    task.value.content = "";
+  }
+};
+// end-template追加
 
 function numbering(){
   // ストアから全タスクを取得

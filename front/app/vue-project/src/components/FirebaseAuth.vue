@@ -48,6 +48,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { useRouter } from 'vue-router'
 import { useTaskStore } from '../store/taskStore'
+import { useTemplateStore } from '../store/templateStore'
 import { useAuthStore } from '../store/authStore'
 
 // Firebase初期化
@@ -67,6 +68,7 @@ const provider = new GoogleAuthProvider();
 let idToken = ref(null);
 const router = useRouter();
 const taskStore = useTaskStore()
+const templateStore = useTemplateStore()
 const authStore = useAuthStore()
 
 // この子コンポーネントが発行できるイベントを定義
@@ -82,6 +84,7 @@ function login() {
       authStore.setIdToken(idToken);
       // ストアからタスクを取得 (loadTasks の完了を待つ)
       await taskStore.loadTasks(idToken);
+      await templateStore.loadTemplates(idToken);
       const calendarEvents = taskStore.loadEvents()
       // 親にイベントを発行し、取得したカレンダーイベントを渡す
       emit('update-events', calendarEvents);
@@ -96,6 +99,7 @@ function logout() {
   signOut(auth).then(() => {
     // ログアウト後にtasks,pinia,カレンダーイベントを初期化
     taskStore.tasks = [];
+    templateStore.templates = [];
     authStore.clearLoginUser();
     authStore.clearIdToken();
     const calendarEvents = [];
