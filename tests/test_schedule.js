@@ -78,7 +78,7 @@ describe("Schedule Test - Create & Update", function() {
 
       // ---- タイトル入力 ----
       const textInputs = await driver.findElements(By.css('input[type="text"]'));
-      await textInputs[0].sendKeys("自動テスト");
+      await textInputs[1].sendKeys("自動テスト");
 
       // ---- 内容の入力 (現在時刻) ----
       const now = new Date().toLocaleString();

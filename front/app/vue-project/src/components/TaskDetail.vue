@@ -17,19 +17,14 @@
                  bg-color="#FFE4E1"
                ></v-select>
              </v-col>
-               <!-- タスク区分が選択された場合に「雛形表示」「雛形登録」ボタン表示 -->
-               <v-col cols="3" class="d-flex align-center justify-start">
-               <v-btn v-if="task.type" color="#EEEEEE" @click="displayTemplate">
-                雛形表示
-               </v-btn>
+             <!-- タスク区分が選択された場合に「テンプレート表示」「テンプレート登録」表示 -->
+             <v-col cols="3" class="d-flex align-center justify-start">
+               <img :src="require('../assets/namakemono_tempDisp.png')"  alt="namakemonoTemp" class="namakemonoTemp"  title="テンプレート表示"  v-if="task.type"  @click="displayTemplate">
              </v-col>
              <v-col cols="3" class="d-flex align-center justify-start">
-               <v-btn v-if="task.type" color="#EEEEEE" @click="submitTemplate">
-                雛形登録
-               </v-btn>
+               <img :src="require('../assets/namakemono_tempAdd.png')"  alt="namakemonoTemp" class="namakemonoTemp"  title="テンプレート登録"  v-if="task.type"  @click="submitTemplate">
              </v-col>
             </v-row>
-            <!-- end-template追加 -->
           <!-- 締切日（予定日） -->
           <v-text-field :label="dateLabel" v-model="task.date" type="date" outlined required class="indentField"></v-text-field>
           <!-- タイトル -->
@@ -229,4 +224,9 @@ function confirmDeleteTask() {
    margin-left: 25px;
    width: calc(100% - 25px);
   }
+  .namakemonoTemp {
+  width: 80px;
+  height: 60px;
+  cursor: pointer;
+}
 </style>
