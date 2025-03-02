@@ -5,10 +5,9 @@
 <img src="./front/app/vue-project/src/assets/animal_namakemono_mini.png" width="100px">
 
 ## システム構成図
-<img src="./front/app/vue-project/src/assets/animal_namakemono_mini.png" width="100px">
+<img src="./front/app/vue-project/src/assets/system.png" width="３00px">
 
 ## 技術要素
-<img src="./front/app/vue-project/src/assets/animal_namakemono_mini.png" width="100px">
 
 #### フロントエンド
 | 名称 | 説明 |
@@ -61,5 +60,5 @@
 | ---- | ---- |
 | Selenium | headlessモードでブラウザのGUIの起動なしでWebアプリの自動テストを実施 |
 
-- GitHub ActionsでmainブランチにPullRequest時に実行されます。エラーが発生した場合はマージ出来ません。
+- GitHub ActionsでmainブランチにPullRequest時に実行されます。
 
