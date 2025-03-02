@@ -2,20 +2,24 @@
   <v-container>
     <v-card>
       <v-card-text>
-        <v-form ref="form" v-model="valid">
+        <v-form v-slot="{ }" @submit.prevent="onSubmit(errors)">
           <!-- タスク区分 -->
-            <!-- start-template追加 -->
             <v-row>
              <v-col cols="6">
                <v-select
                  v-model="task.type"
                  :items="taskTypeItems"
-                 label="タスク区分"
                  outlined
+                 :rules="[v => !!v || 'タスク区分は必須です']"
                  required
-                 color="#660000"
-                 bg-color="#FFE4E1"
-               ></v-select>
+                 name="type"
+               >
+                 <!-- ラベルのカスタマイズ。「＊必須」部分のみ赤字 -->
+                 <template #label>
+                   <span>タスク区分</span>
+                   <span class="required">　＊必須</span>
+                 </template>
+               </v-select>
              </v-col>
              <!-- タスク区分が選択された場合に「テンプレート表示」「テンプレート登録」表示 -->
              <v-col cols="3" class="d-flex align-center justify-start">
@@ -26,21 +30,47 @@
              </v-col>
             </v-row>
           <!-- 締切日（予定日） -->
-          <v-text-field :label="dateLabel" v-model="task.date" type="date" outlined required class="indentField"></v-text-field>
+          <v-text-field
+            v-model="task.date"
+            type="date"
+            outlined
+            :rules="[v => !!v || '日付は必須です']"
+            required
+            name="date"
+          >
+            <template #label>
+              <span v-if="task.type === '3'">締切日</span>
+              <span v-else>予定日</span>
+              <span class="required">　＊必須</span>
+            </template>
+          </v-text-field>
           <!-- タイトル -->
-          <v-text-field label="タイトル" v-model="task.title" maxlength="10" counter outlined required class="indentField"></v-text-field>
+          <v-text-field
+            v-model="task.title"
+            maxlength="10"
+            counter
+            outlined
+            :rules="[v => !!v || 'タイトルは必須です']"
+            required
+            name="title"
+          >
+            <template #label>
+              <span>タイトル</span>
+              <span class="required">　＊必須</span>
+            </template>
+          </v-text-field>          
           <!-- 内容 -->
-          <v-textarea label="内容" v-model="task.content" maxlength="100" counter rows="4" outlined required class="indentField"></v-textarea>
+          <v-textarea label="内容" v-model="task.content" maxlength="100" counter rows="4" outlined required name="content" ></v-textarea>
           <!-- 完了フラグ -->
-          <v-checkbox v-model="task.isCompleted" label="完了フラグ" class="my-2 indentField"></v-checkbox>
+          <v-checkbox v-model="task.isCompleted" label="完了フラグ" class="my-2 indentField" name="isCompleted"></v-checkbox>
 
           <!-- 登録ボタン -->
-          <v-btn v-show="addUpFlg === '1'" color="#EEEEEE" class="mr-2" @click="submitTask">
-            登録
+          <v-btn v-show="addUpFlg === '1'" color="#EEEEEE" class="mr-2" type="submit" @click.stop="mode = 'create'">
+              登録
           </v-btn>
           <!-- 更新ボタン -->
-          <v-btn v-show="addUpFlg === '2'" color="#EEEEEE" class="mr-2" @click="updateTask">
-            更新
+          <v-btn v-show="addUpFlg === '2'" color="#EEEEEE" class="mr-2" type="submit" @click.stop="mode = 'update'">
+              更新
           </v-btn>
           <!-- 削除ボタン -->
           <v-btn v-show="addUpFlg === '2'" color="#EEEEEE" @click="confirmDeleteTask">
@@ -53,7 +83,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useTaskStore } from '../store/taskStore';
 import { useTemplateStore } from '../store/templateStore';  //template追加
@@ -62,9 +92,6 @@ import { useTemplateStore } from '../store/templateStore';  //template追加
 const route = useRoute();
 const itemNumber = route.params.itemNumber;
 const router = useRouter();
-
-// フォームバリデーション
-const valid = ref(false);
 const taskStore = useTaskStore();
 const templateStore = useTemplateStore();   //template追加
 
@@ -77,6 +104,8 @@ const taskTypeItems = [
 
 //新規／更新判定フラグ（1:新規,2:更新）
 const addUpFlg = ref('');
+//新規／更新を onSubmit で判別するためのフラグ（create／update）
+const mode = ref('create');
 
 // フォームデータ
 const task = ref({
@@ -93,13 +122,6 @@ const template = ref({
   content: ''
 });
 
-// タスク区分に応じて「実施予定日」あるいは「締切日」を返す
-const dateLabel = computed(() => {
-  return task.value.type === '3'
-    ? '締切日'
-    : '予定日';
-});
-
 // マウント時にストアから既存データをセット
 onMounted(() => {
   console.log('itemNumber:', itemNumber);
@@ -113,10 +135,25 @@ onMounted(() => {
   }
   if (task.value.date == '') {
     addUpFlg.value = '1';
+    mode.value = 'create';
   } else {
     addUpFlg.value = '2';
+    mode.value = 'update';
   }
 });
+
+function onSubmit() {
+  if(task.value.type=='' || task.value.date=='' || task.value.title==''){
+      console.log("バリデーションエラー");
+      return;
+  }
+  // mode を見て登録 or 更新を分岐
+  if (mode.value === 'update') {
+    updateTask();
+  } else {
+    submitTask();
+  }
+}
 
 // タスク登録処理
 const submitTask = () => {
@@ -130,6 +167,7 @@ const submitTask = () => {
   console.log('number:',task.value.number,'title:',task.value.title,'type:',task.value.type,'date:',task.value.date,'content:',task.value.content,'isCompleted:',task.value.isCompleted
 );
   addUpFlg.value = '2';
+  mode.value = 'update';
 };
 
 // タスク更新処理
@@ -159,7 +197,7 @@ const deleteTask = () => {
 
 // start-template追加
 const submitTemplate = () => {
-  console.log('雛形登録ボタン押下');
+  console.log('テンプレート登録ボタン押下');
   template.value.type = task.value.type
   template.value.title = task.value.title
   template.value.content = task.value.content
@@ -167,7 +205,7 @@ const submitTemplate = () => {
   console.log("template.value:",template.value);
 };
 const displayTemplate = () => {
-  console.log('雛形表示ボタン押下');
+  console.log('テンプレート表示ボタン押下');
   const template = templateStore.getTemplateByType(task.value.type);
   if (template) {
     task.value.title = template.title;
@@ -219,14 +257,12 @@ function confirmDeleteTask() {
 </script>
 
 <style scoped>
-  .indentField {
-   /* 左にインデントしてスペースを空ける分、widthを狭くして右端を合わせる */
-   margin-left: 25px;
-   width: calc(100% - 25px);
-  }
   .namakemonoTemp {
   width: 80px;
   height: 60px;
   cursor: pointer;
+}
+.required {
+  color: red;
 }
 </style>
