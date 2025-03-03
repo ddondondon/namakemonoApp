@@ -26,7 +26,7 @@
             <br v-if="event.type === '1'" />
             <img
               v-if="event.type === '2'"
-              src="@/assets/clock.png"
+              src="@/assets/human.png"
               alt="ベル"
               style="width: 20px; height: 20px;"
             />
