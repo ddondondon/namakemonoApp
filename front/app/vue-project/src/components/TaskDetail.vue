@@ -22,11 +22,9 @@
                </v-select>
              </v-col>
              <!-- タスク区分が選択された場合に「テンプレート表示」「テンプレート登録」表示 -->
-             <v-col cols="3" class="d-flex align-center justify-start">
-               <img :src="require('../assets/namakemono_tempDisp.png')"  alt="namakemonoTemp" class="namakemonoTemp"  title="テンプレート表示"  v-if="task.type"  @click="displayTemplate">
-             </v-col>
-             <v-col cols="3" class="d-flex align-center justify-start">
-               <img :src="require('../assets/namakemono_tempAdd.png')"  alt="namakemonoTemp" class="namakemonoTemp"  title="テンプレート登録"  v-if="task.type"  @click="submitTemplate">
+             <v-col cols="6" class="d-flex align-center justify-start">
+               <img :src="require('../assets/bucketOut.png')"  alt="bucket" class="bucket"  title="テンプレート表示"  v-if="task.type"  @click="displayTemplate">
+               <img :src="require('../assets/bucketIn.png')"  alt="bucket" class="bucket"  title="テンプレート登録"  v-if="task.type"  @click="submitTemplate">
              </v-col>
             </v-row>
           <!-- 締切日（予定日） -->
@@ -257,7 +255,7 @@ function confirmDeleteTask() {
 </script>
 
 <style scoped>
-  .namakemonoTemp {
+  .bucket {
   width: 80px;
   height: 60px;
   cursor: pointer;
