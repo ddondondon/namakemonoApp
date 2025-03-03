@@ -2,7 +2,10 @@
 #### - ナマケモノのためのスケジュール＆タスク管理アプリ - 
 
 ## アプリ紹介
-<img src="./front/app/vue-project/src/assets/animal_namakemono_mini.png" width="100px">
+<img src="./front/app/vue-project/src/assets/HC_Calender.png" width="300px">
+<img src="./front/app/vue-project/src/assets/HC_List.png" width="300px">
+<img src="./front/app/vue-project/src/assets/HC_taskDetail.png" width="300px">
+
 
 ## システム構成図
 <img src="./front/app/vue-project/src/assets/system.png" width="３00px">
