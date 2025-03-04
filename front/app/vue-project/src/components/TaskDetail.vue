@@ -4,8 +4,8 @@
       <v-card-text>
         <v-form v-slot="{ }" @submit.prevent="onSubmit(errors)">
           <!-- タスク区分 -->
-            <v-row>
-             <v-col cols="6">
+            <v-row class="align-center">
+             <v-col cols="6" class="d-flex align-center">
                <v-select
                  v-model="task.type"
                  :items="taskTypeItems"
@@ -23,8 +23,34 @@
              </v-col>
              <!-- タスク区分が選択された場合に「テンプレート表示」「テンプレート登録」表示 -->
              <v-col cols="6" class="d-flex align-center justify-start">
-               <img :src="require('../assets/bucketOut.png')"  alt="bucket" class="bucket"  title="テンプレート表示"  v-if="task.type"  @click="displayTemplate">
-               <img :src="require('../assets/bucketIn.png')"  alt="bucket" class="bucket"  title="テンプレート登録"  v-if="task.type"  @click="submitTemplate">
+              <v-btn
+                icon
+                variant="text"
+                v-if="task.type"
+                @click="displayTemplate"
+                :title="'テンプレート表示'"
+                class="bucket mr-2"
+                >
+                <img
+                  src="../assets/bucketOut.png"
+                  alt="bucket"
+                  class="bucket mr-2"
+                />
+              </v-btn>
+              <v-btn
+                icon
+                variant="text"
+                v-if="task.type"
+                @click="submitTemplate"
+                :title="'テンプレート登録'"
+                class="bucket mr-2"
+                >
+                <img
+                  src="../assets/bucketIn.png"
+                  alt="bucket"
+                  class="bucket mr-2"
+                />
+              </v-btn>
              </v-col>
             </v-row>
           <!-- 締切日（予定日） -->
@@ -259,6 +285,7 @@ function confirmDeleteTask() {
   width: 80px;
   height: 60px;
   cursor: pointer;
+  padding: 0 5px 10px 10px;
 }
 .required {
   color: red;
