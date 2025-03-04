@@ -27,7 +27,7 @@
             <img
               v-if="event.type === '2'"
               src="@/assets/human.png"
-              alt="ベル"
+              alt="人"
               style="width: 20px; height: 20px;"
             />
             <img

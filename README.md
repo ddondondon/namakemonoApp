@@ -1,9 +1,15 @@
 # namakemonoApp
 #### - ナマケモノのためのスケジュール＆タスク管理アプリ - 
+スケジュール・タスク管理が面倒なナマケモノさんのために、少ないアクションで最低限のタスクの締切、打合せ予定を管理するアプリ。
+登録できるタスク区分は"休日"、"予定"、"締切"の３種類のみ、まずは休日を登録して休みの日を確保した上で最低限のタスクの締切、打合せ予定を登録しましょう。
 
 ## アプリ紹介
+### https://namakemonoapp.com
+①カレンダー画面
 <img src="./front/app/vue-project/src/assets/HC_Calender.png" width="1000px"><br>
+②リスト画面
 <img src="./front/app/vue-project/src/assets/HC_List.png" width="1000px"><br>
+③タスク登録画面
 <img src="./front/app/vue-project/src/assets/HC_taskDetail.png" width="1000px"><br>
 
 
@@ -16,30 +22,28 @@
 | 名称 | 説明 |
 | ---- | ---- |
 | Vue 3 | フロントエンドフレームワーク |
+| Vue-router | SPA（シングルページアプリケーション）構築 |
 | Vuetify | UIコンポーネント |
-| Vue-router | xxx |
-| Pinia | xxx |
-| Axios | xxx |
+| Pinia | 状態管理（複数コンポーネントにわたるリアクティブなデータを管理） |
+| Axios | バックエンドへのHTTP通信を行う |
 | Firebase Authentication | JWTを用いたログイン・ログアウト |
-
-- Vuetifyコンポーネントを導入することで、スマホ利用を想定したレスポンシブデザインを実現。
-
-- Vuexストアでステート管理。
-
-- 個人情報（パスワード）は、外部API（Firebase Authentication）に保存する仕組みで、外部APIで発行されるJWTをCookieに保存してログイン・ログアウト機能を実装しました。
-
 
 #### バックエンド
 | 名称 | 説明 |
 | ---- | ---- |
 | Node.js | APIサーバーとして利用 |
+| Axios | フロントエンドからのHTTPリクエストにJSON形式のレスポンスを返却する |
 | PostgreSQL | データベース |
 
-- Node.jsはAPIサーバーとして利用しており、フロントエンドコンテナからのリクエストに対してJSONデータを返しています。
+#### プロキシ
+| 名称 | 説明 |
+| ---- | ---- |
+| Apache | HTTPサーバ |
+| Let’s Encrypt | SSL証明書 |
 
-- その他のデータはRDSに保存。
+- プロキシコンテナを経由することで常時SSL通信化。外部→プロキシ間はHTTPS通信、プロキシ→フロントエンド／バックエンド間はHTTP通信。
+- 本番環境はAWSのXXなどを使ってフロントエンドの資源を配布することが一般的ですが、今回はXXのためEC2にdocker-composeでコンテナを構築
 
-- 個人情報（ログインパスワード）は外部API（Firebase Authentication）にのみ保存しており、RDSには保存されません。
 
 #### インフラ
 | 名称 | 説明 |
@@ -53,7 +57,7 @@
 
 - ローカル開発環境からデプロイまで一貫してDockerを使用。
 
-- プロキシコンテナを経由することで常時SSL通信化。
+- AWSの環境構築はTerraformで自動化。
 
 - CodePipelineは、『Sourceステージ => Deployステージ』の順で実行され、SourceステージにてGitHubから引き上げた資源をDeployステージにてdocker-composeを使ってEC2にデプロイします。
 
@@ -63,5 +67,5 @@
 | ---- | ---- |
 | Selenium | headlessモードでブラウザのGUIの起動なしでWebアプリの自動テストを実施 |
 
-- GitHub ActionsでmainブランチにPullRequest時に実行されます。
+- GitHub ActionsでmainブランチにPullRequest時に自動テストを実施。
 

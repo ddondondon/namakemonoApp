@@ -1,19 +1,17 @@
 <template>
   <div>
-   <p v-if="authStore.loginUser.uid" class="logInName">ログイン中: {{ authStore.loginUser.displayName }}</p>
-   <p v-else class="logInName">ゲスト</p>
-   <img :src="require('../assets/login.svg')" 
-        alt="login icon" class="log-icon" 
-        title="ログイン" 
-        v-if="!authStore.loginUser.uid" 
-        @click="login">
-   <img :src="require('../assets/logout.svg')" 
-        alt="logout icon" class="log-icon" 
-        title="ログアウト" 
-        v-if="authStore.loginUser.uid" 
-        @click="logout">  
-    <img :src="require('../assets/animal_namakemono.png')" alt="namakemono" class="namakemono" title="タスク追加" @click="addNewTask">
-  </div>
+    <p v-if="authStore.loginUser.uid" class="logInName">ログイン中: {{ authStore.loginUser.displayName }}</p>
+    <p v-else class="logInName">ゲスト</p>
+    <v-btn icon variant="text" @click="login" :title="'ログイン'" class="log-icon" v-if="!authStore.loginUser.uid">  
+      <img :src="require('../assets/login.svg')"  alt="login icon" class="log-icon"  >
+    </v-btn>
+    <v-btn icon variant="text" @click="logout" :title="'ログアウト'" class="log-icon" v-if="authStore.loginUser.uid">  
+      <img :src="require('../assets/logout.svg')"  alt="logout icon" class="log-icon"  >  
+    </v-btn>
+    <v-btn icon variant="text" @click="addNewTask" :title="'タスク追加'" class="namakemono">  
+      <img :src="require('../assets/animal_namakemono.png')" alt="namakemono" class="namakemono">
+    </v-btn>
+</div>
 </template>
 
 <style lang="scss">
@@ -34,10 +32,10 @@
   cursor: pointer;
 }
 .logInName {
-  top: 15px;
-  right: 70px;
+  top: 10px;
+  right: 80px;
   width: 250px;
-  height: 50px;
+  height: 20px;
   position: absolute;
   text-align: right;
 }
