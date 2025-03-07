@@ -6,22 +6,24 @@
 
 ## アプリ紹介
 ### https://namakemonoapp.com
-①カレンダー画面
-<img src="./front/app/vue-project/src/assets/HC_Calender.png" width="1000px"><br>
-②リスト画面
-<img src="./front/app/vue-project/src/assets/HC_List.png" width="1000px"><br>
-③タスク登録画面（新規登録）
-<img src="./front/app/vue-project/src/assets/HC_taskDetail_New.png" width="1000px"><br>
-④タスク登録画面（更新・削除）
-<img src="./front/app/vue-project/src/assets/HC_taskDetail_Up.png" width="1000px"><br>
 
-- スマホサイズ表示
-<img src="./front/app/vue-project/src/assets/HC_Calender.png" width="1000px"><br>
+### ①カレンダー画面
+<img src="./front/app/vue-project/src/assets/HC_Calender.png" width="1000px">
+
+### ②リスト画面
+<img src="./front/app/vue-project/src/assets/HC_List.png" width="1000px">
+
+### ③タスク登録画面（新規登録）
+<img src="./front/app/vue-project/src/assets/HC_taskDetail_New.png" width="1000px">
+
+### ④タスク登録画面（更新・削除）
+<img src="./front/app/vue-project/src/assets/HC_taskDetail_Up.png" width="1000px">
+
+### スマホサイズ表示
+<img src="./front/app/vue-project/src/assets/HC_mini_All.png" width="1000px">
 
 ## システム構成図
-<img src="./front/app/vue-project/src/assets/HC_Calender_mini.png" width="300px">
-<img src="./front/app/vue-project/src/assets/HC_List_mini.png" width="300px">
-<img src="./front/app/vue-project/src/assets/HC_taskDetail_mini.png" width="300px">
+<img src="./front/app/vue-project/src/assets/system.png" width="1000px">
 
 ## 技術要素
 
